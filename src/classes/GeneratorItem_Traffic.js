@@ -8,14 +8,35 @@ class GeneratorItem_Traffic {
 
     this.x = x;
     this.z = z;
-
+    this.roadPositionx = 0;
+    this.roadPositionz = 0;
     this.roadWidth = window.game.roadWidth;
 
     this.cars = [];
 
-    for (let j=0; j<3; j++) {
-      for (let k=0; k<(Math.floor(Math.random()*3)); k++) 
-        this.cars.push( new Car(j, this.x-this.roadWidth/2, this.z-this.roadWidth/2) );
+    for (let j=0; j<4; j++) {
+      for (let k=0; k<(Math.floor(Math.random()*30)); k++) 
+        // switch based on direction j
+        switch (j) {
+          case 0: 
+            this.roadPositionx = this.x-this.roadWidth/2 - 2; 
+            this.roadPositionz = this.z-this.roadWidth/2;
+            break;
+          case 1: 
+            this.roadPositionx = this.x+this.roadWidth/2 + 2; 
+            this.roadPositionz = this.z-this.roadWidth/2;
+            break;
+          case 2: 
+            this.roadPositionx = this.x-this.roadWidth/2;
+            this.roadPositionz = this.z-this.roadWidth/2 - 2; 
+            break;
+          case 3: 
+            this.roadPositionx = this.x-this.roadWidth/2;
+            this.roadPositionz = this.z+this.roadWidth/2 + 2; 
+            break;
+        }
+
+        this.cars.push( new Car(j, this.roadPositionx, this.roadPositionz) );
     }
 
   }

@@ -78,7 +78,7 @@ class Game {
     // world settings (do not change)
 
     this.cityBlockSize = 128;
-    this.roadWidth = 24;
+    this.roadWidth = 48;
 
     // collision
 
