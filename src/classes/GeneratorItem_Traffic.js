@@ -10,12 +10,14 @@ class GeneratorItem_Traffic {
     this.z = z;
     this.roadPositionx = 0;
     this.roadPositionz = 0;
+    this.speed = 1.2;
+    this.alt = 20;
     this.roadWidth = window.game.roadWidth;
 
     this.cars = [];
 
     for (let j=0; j<4; j++) {
-      for (let k=0; k<(Math.floor(Math.random()*30)); k++) 
+      for (let k=0; k<(Math.floor(Math.random()*3000)); k++) 
         // switch based on direction j
         switch (j) {
           case 0: 
@@ -36,7 +38,16 @@ class GeneratorItem_Traffic {
             break;
         }
 
-        this.cars.push( new Car(j, this.roadPositionx, this.roadPositionz) );
+        // altitude
+        // random 20, 40, 60 or 80
+        this.alt = (Math.floor(Math.random()*4)+1)*20;     
+        
+        if(this.alt == 20) { this.speed = 0.2}
+        if(this.alt == 40) { this.speed = 0.8}
+        if(this.alt == 60) { this.speed = 1.2}
+        if(this.alt == 80) { this.speed = 1.6}
+
+        this.cars.push( new Car(j, this.roadPositionx, this.roadPositionz, this.speed, this.alt) );
     }
 
   }
@@ -53,7 +64,7 @@ class GeneratorItem_Traffic {
 }
 
 class Car {
-  constructor(dir, spawn_x, spawn_z) {
+  constructor(dir, spawn_x, spawn_z, speed, alt) {
 
     this.dir = dir; // 0, 1, 2, 3
 
@@ -62,10 +73,10 @@ class Car {
 
     this.x = spawn_x;
     this.z = spawn_z;
-    this.alt = 0;
+    this.alt = alt;
     this.alt_offset = 0;
-    this.speed = 1.2;
-    this.speed_factor = 1;
+    this.speed_factor = speed;
+    this.speed = speed;
     this.v = new Vector2();
 
     // create mesh
@@ -81,21 +92,21 @@ class Car {
     // east
     if (this.dir==0) {
       this.v.set(this.speed, 0);
-      this.alt = 20;
+      //this.alt = 20;
       this.mesh.rotateY(Math.PI/2);
       this.x -= Math.floor(Math.random()*20)*4;
     }
     // west
     if (this.dir==1) {
       this.v.set(-this.speed, 0);
-      this.alt = 60;
+      //this.alt = 60;
       this.mesh.rotateY(-Math.PI/2);
       this.x -= Math.floor(Math.random()*20)*4;
     }
     // north
     if (this.dir==2) {
       this.v.set(0, -this.speed);
-      this.alt = 40;
+      //this.alt = 40;
       this.mesh.rotateY(Math.PI);
       this.mesh.position.z = this.mesh.position.z-(Math.random()*2);
       this.z -= Math.floor(Math.random()*20)*4;
@@ -103,17 +114,22 @@ class Car {
     // south
     if (this.dir==3) {
       this.v.set(0, this.speed);
-      this.alt = 80;
+      //this.alt = 80;
       this.mesh.position.z = this.mesh.position.z-(Math.random()*2);
       this.z -= Math.floor(Math.random()*20)*4;
     }
 
-    // adjust alt
+    // random altitude 
+    this.alt = alt //(Math.floor(Math.random()*4)+1)*20;
+
+    // random very high altitude
+    
     if (Math.random()<0.5) this.alt_offset = 200;
     if (Math.random()<0.2) {
       this.alt_offset = 400;
       this.speed_factor = 2;
     }
+    
 
   }
   remove() {
