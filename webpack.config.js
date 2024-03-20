@@ -14,12 +14,15 @@ module.exports = {
       template: './src/index.html', // Your template file
       filename: 'index.html' // Output file
     }),
+    
     new CopyWebpackPlugin({
       patterns: [
         { from: './assets', to: 'assets' },
         { from: './css', to: 'css' },
-        { from: './js', to: 'js' }
+        { from: './js', to: 'js' },
+        { from: './img', to: 'img' },       
       ],
-    })    
+    })
+        
   ]  
 };

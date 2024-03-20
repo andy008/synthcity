@@ -16,8 +16,12 @@ class GeneratorItem_Traffic {
 
     this.cars = [];
 
+    let count = 1
+    console.log('Reset car count')
     for (let j=0; j<4; j++) {
-      for (let k=0; k<(Math.floor(Math.random()*3000)); k++) 
+      let initialCarCount  = Math.floor(Math.random()*10);
+      console.log('Car count: ' + initialCarCount);
+      for (let k=0; k < initialCarCount ; k++) {
         // switch based on direction j
         switch (j) {
           case 0: 
@@ -38,6 +42,8 @@ class GeneratorItem_Traffic {
             break;
         }
 
+        count++;
+
         // altitude
         // random 20, 40, 60 or 80
         this.alt = (Math.floor(Math.random()*4)+1)*20;     
@@ -46,8 +52,9 @@ class GeneratorItem_Traffic {
         if(this.alt == 40) { this.speed = 0.8}
         if(this.alt == 60) { this.speed = 1.2}
         if(this.alt == 80) { this.speed = 1.6}
-
+        console.log('Added car:' + count + ' Loop:' + k);
         this.cars.push( new Car(j, this.roadPositionx, this.roadPositionz, this.speed, this.alt) );
+      }
     }
 
   }
