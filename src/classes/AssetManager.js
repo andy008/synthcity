@@ -51,6 +51,7 @@ class AssetManager {
     };
     this.loadingManager.onLoad = function () {
       console.log( 'AssetManager: Assets loaded' );
+      self.createMaterials();
       window.game.onLoad();
     };
     this.loadingManager.onError = function ( url ) {
@@ -289,6 +290,10 @@ class AssetManager {
 
     // spotlight
     this.objLoader.load(this.path+'models/spotlight.obj', function (obj) { self.models['spotlight'] = obj.children[0].geometry; });
+
+  }
+
+  createMaterials() {
 
     /*----- materials -----*/
 
