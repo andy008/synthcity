@@ -51,6 +51,7 @@ class AssetManager {
     };
     this.loadingManager.onLoad = function () {
       console.log( 'AssetManager: Assets loaded' );
+      self.createMaterials();
       window.game.onLoad();
     };
     this.loadingManager.onError = function ( url ) {
@@ -290,17 +291,21 @@ class AssetManager {
     // spotlight
     this.objLoader.load(this.path+'models/spotlight.obj', function (obj) { self.models['spotlight'] = obj.children[0].geometry; });
 
+  }
+
+  createMaterials() {
+
     /*----- materials -----*/
 
-    this.materials['ground'] = new MeshPhongMaterial({
+    this.materials['ground'] = new MeshPhongMaterial(this.createMaterialProps({
       map: this.getTexture('ground'),
       emissive: 0x0090ff,
       emissiveMap: this.getTexture('ground_em'),
       emissiveIntensity: window.game.environment.name=='night' ? 0.2 : 0,
       shininess: 0
-    });
+    }));
 
-    this.materials['spinner_interior'] = new MeshStandardMaterial( {
+    this.materials['spinner_interior'] = new MeshStandardMaterial(this.createMaterialProps({
       map: this.getTexture('spinner_interior'),
       normalMap: this.getTexture('spinner_interior_norm'),
       aoMap: this.getTexture('spinner_interior_ao'),
@@ -310,13 +315,13 @@ class AssetManager {
       emissive: 0xffffff,
       emissiveMap: this.getTexture('spinner_interior_em'),
       emissiveIntensity: 0.1,
-    } );
-    this.materials['spinner_exterior'] = new MeshPhongMaterial( {
+    }));
+    this.materials['spinner_exterior'] = new MeshPhongMaterial(this.createMaterialProps({
       map: this.getTexture('spinner_exterior'),
       shininess: 0
-    } );
+    }));
 
-    this.materials['spinner_windows_advanced'] = new MeshPhysicalMaterial( {
+    this.materials['spinner_windows_advanced'] = new MeshPhysicalMaterial(this.createMaterialProps({
       color: 0xffffff,
       transparent: false,
       opacity: 1,
@@ -328,9 +333,9 @@ class AssetManager {
       transmissionMap: this.getTexture('spinner_windows_trans'),
       thickness: 0.01,
       normalMap: this.getTexture('spinner_windows_norm')
-    } );
+    }));
    
-    this.materials['spinner_windows_simple'] = new MeshStandardMaterial( {
+    this.materials['spinner_windows_simple'] = new MeshStandardMaterial(this.createMaterialProps({
       color: 0x808080,
       transparent: true,
       opacity: 0.1,
@@ -339,28 +344,28 @@ class AssetManager {
       metalness: 1,
       normalMap: this.getTexture('spinner_windows_norm'),
       blending: AdditiveBlending
-    } );
+    }));
 
-    this.materials['cars'] = new MeshPhongMaterial({
+    this.materials['cars'] = new MeshPhongMaterial(this.createMaterialProps({
       map: this.getTexture('cars'),
       emissive: 0xffffff,
       emissiveMap: this.getTexture('cars_em'),
       emissiveIntensity: 1.0,
       side: DoubleSide
-    });
+    }));
 
-    this.materials['storefronts'] = new MeshPhongMaterial({
+    this.materials['storefronts'] = new MeshPhongMaterial(this.createMaterialProps({
       map: this.getTexture('storefronts'),
       emissive: 0xffffff,
       emissiveMap: this.getTexture('storefronts_em'),
       emissiveIntensity: this.buildingWindowsEmissiveIntensity,
       shininess: 0
-    });
+    }));
 
     // buildings
     for (let i=0; i<10; i++) {
       let id = this.padNumber(i+1);
-      this.materials['building_'+id] = new MeshPhongMaterial({
+      this.materials['building_'+id] = new MeshPhongMaterial(this.createMaterialProps({
         map: this.getTexture('building_'+id),
         specular: 0xffffff,
         specularMap: this.getTexture('building_'+id+'_rough'),
@@ -370,11 +375,11 @@ class AssetManager {
         emissiveIntensity: this.buildingWindowsEmissiveIntensity,
         bumpMap: this.getTexture('building_'+id),
         bumpScale: 5
-      });
+      }));
     }
 
     // mega building
-    this.materials['mega_building_01'] = new MeshPhongMaterial({
+    this.materials['mega_building_01'] = new MeshPhongMaterial(this.createMaterialProps({
       map: this.getTexture('mega_building_01'),
       specular: 0x777777,
       shininess: 1,
@@ -383,12 +388,12 @@ class AssetManager {
       emissiveIntensity: this.buildingWindowsEmissiveIntensity,
       bumpMap: this.getTexture('mega_building_01'),
       bumpScale: 10
-    });
+    }));
 
     // ads small
     for (let i=0; i<5; i++) {
       let id = this.padNumber(i+1);
-      this.materials['ads_'+id] = new MeshPhongMaterial({
+      this.materials['ads_'+id] = new MeshPhongMaterial(this.createMaterialProps({
         // map: this.getTexture('ads_'+id),
         emissive: 0xffffff,
         emissiveMap: this.getTexture('ads_'+id),
@@ -396,13 +401,13 @@ class AssetManager {
         blending: AdditiveBlending,
         fog: false,
         side: DoubleSide
-      });
+      }));
     }
 
     // ads large
     for (let i=0; i<5; i++) {
       let id = this.padNumber(i+1);
-      this.materials['ads_large_'+id] = new MeshPhongMaterial({
+      this.materials['ads_large_'+id] = new MeshPhongMaterial(this.createMaterialProps({
         // map: this.getTexture('ads_large_'+id),
         emissive: 0xffffff,
         emissiveMap: this.getTexture('ads_large_'+id),
@@ -410,13 +415,13 @@ class AssetManager {
         blending: AdditiveBlending,
         fog: false,
         side: DoubleSide
-      });
+      }));
     }
 
     // smoke
     for (let i=0; i<3; i++) {
       let id = this.padNumber(i+1);
-      this.materials['smoke_'+id] = new MeshPhongMaterial({
+      this.materials['smoke_'+id] = new MeshPhongMaterial(this.createMaterialProps({
         alphaMap: this.getTexture('smoke_'+id),
 				color: 0xffffff,
 				shininess: 0,
@@ -424,13 +429,13 @@ class AssetManager {
 				blending: AdditiveBlending,
 				depthWrite: false,
 				transparent: false
-      });
+      }));
     }
 
     // spotlights
     for (let i=0; i<4; i++) {
       let id = this.padNumber(i+1);
-      this.materials['spotlight_'+id] = new MeshPhongMaterial({
+      this.materials['spotlight_'+id] = new MeshPhongMaterial(this.createMaterialProps({
         alphaMap: this.getTexture('spotlight_'+id),
 				color: 0xffffff,
 				shininess: 0,
@@ -438,13 +443,32 @@ class AssetManager {
 				blending: AdditiveBlending,
 				depthWrite: false,
 				transparent: false
-      });
+      }));
     }
 
   }
 
   getTexture(id) {
-    return this.textures[id];
+    const texture = this.textures[id];
+    if (!texture) {
+      console.warn(`AssetManager: Texture '${id}' not found or failed to load`);
+      return null;
+    }
+    return texture;
+  }
+
+  // Helper method to safely create material properties with texture checking
+  createMaterialProps(props) {
+    const safeProps = {};
+    for (const [key, value] of Object.entries(props)) {
+      // Skip null textures to prevent Three.js errors
+      if (value === null && (key.includes('Map') || key === 'map' || key === 'envMap')) {
+        console.warn(`AssetManager: Skipping null texture property '${key}'`);
+        continue;
+      }
+      safeProps[key] = value;
+    }
+    return safeProps;
   }
 
   getModel(id) {
